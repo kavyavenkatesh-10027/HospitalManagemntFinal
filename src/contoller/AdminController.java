@@ -135,7 +135,7 @@ public class AdminController implements AuthorityControllers{
     }
 
     @Override
-    public void viewDiagnosis() {
+    public void viewDiagnosisAndPrescription() {
 
     }
 

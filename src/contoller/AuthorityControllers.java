@@ -5,7 +5,7 @@ public interface AuthorityControllers extends Controller {
 
     public abstract void dischargePatient();
 
-    public abstract void viewDiagnosis();
+    public abstract void viewDiagnosisAndPrescription();
 
     public abstract void viewAdmissions();
 

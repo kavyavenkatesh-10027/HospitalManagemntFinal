@@ -1,6 +1,7 @@
 package contoller;
 
 import model.User;
+import java.util.Scanner;
 
 public class NurseController implements AuthorityControllers{
 
@@ -22,7 +23,73 @@ public class NurseController implements AuthorityControllers{
 
     @Override
     public void start() {
+        Scanner scan = new Scanner(System.in);
 
+            System.out.println("Welcome to Sugah Hospital\n\nWhere our first priority is your health,\n     and we spend our blood, sweat and tears achieving it\n\n");
+            System.out.println("How shall we help you?\n");
+
+        while (true) {
+            System.out.println("\n----- Nurse Dashboard -----");
+            System.out.println("1. View Profile");
+            System.out.println("2. Update Profile");
+            System.out.println("3. View Assigned Wards");
+            System.out.println("4. View Appointments");
+            System.out.println("5. View Patient Medication Details");
+            System.out.println("6. Admit Patient");
+            System.out.println("7. Discharge Patient");
+            System.out.println("8. View Diagnosis");
+            System.out.println("9. View Admissions");
+            System.out.println("0. Logout");
+
+            int choice = scan.nextInt();
+
+            switch (choice) {
+                case 1:
+                    viewProfile();
+                    break;
+
+                case 2:
+                    updateProfile();
+                    break;
+
+                case 3:
+                    viewAssignedWards();
+                    break;
+
+                case 4:
+                    viewAppointments("ALL");
+                    break;
+
+                case 5:
+                    System.out.println("Enter Patient ID:");
+                    String patientId = scan.next();
+                    viewMedicationDetailsForPatient(patientId);
+                    break;
+
+                case 6:
+                    admitPatient();
+                    break;
+
+                case 7:
+                    dischargePatient();
+                    break;
+
+                case 8:
+                    viewDiagnosisAndPrescription();
+                    break;
+
+                case 9:
+                    viewAdmissions();
+                    break;
+
+                case 0:
+                    System.out.println("Logging out...");
+                    return;
+
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        }
     }
 
     @Override
@@ -60,7 +127,7 @@ public class NurseController implements AuthorityControllers{
     }
 
     @Override
-    public void viewDiagnosis() {
+    public void viewDiagnosisAndPrescription() {
 
     }
 

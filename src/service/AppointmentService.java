@@ -30,7 +30,6 @@ public class AppointmentService {
 
     public List<Appointment> viewAppointmentsByPatientId(String patientId){
         return PatientRepository.viewPatientAppointments(patientId);
-
     }
 
     public List<Appointment> viewAppointmentsByDoctorId(String doctorId){

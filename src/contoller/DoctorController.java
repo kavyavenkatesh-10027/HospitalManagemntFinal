@@ -106,7 +106,7 @@ public class DoctorController implements AuthorityControllers{
     }
 
     public boolean takeAppointment(){
-    return true;
+        return true;
     }
 
 

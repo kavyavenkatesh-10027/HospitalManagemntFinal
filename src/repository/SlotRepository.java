@@ -2,16 +2,15 @@ package repository;
 
 import model.Slot;
 
-import java.sql.Time;
-import java.time.DayOfWeek;
+
 import java.util.*;
 
 public class SlotRepository {
 
-    private static final Map<String, List<Slot>> slotDoctorMap = new HashMap<>();
+    private static Map<String, List<Slot>> slotDoctorMap = new HashMap<>();
 
     // slotId -> current booking count
-    private static final Map<String, Integer> slotBookingCount = new HashMap<>();
+    private static Map<String, Integer> slotBookingCount = new HashMap<>();
 
     private static final int MAX_CAPACITY = 6;
 
@@ -53,6 +52,7 @@ public class SlotRepository {
         if (current >= MAX_CAPACITY) {
             return false;
         }
+
 
         slotBookingCount.put(slotId, current + 1);
         return true;

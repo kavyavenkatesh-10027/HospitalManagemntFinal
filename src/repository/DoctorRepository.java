@@ -1,6 +1,7 @@
 package repository;
 
 import contoller.DoctorController;
+import model.Department;
 import model.Doctor;
 import model.Patient;
 import model.Slot;
@@ -55,6 +56,10 @@ public class DoctorRepository {
 
     public static void addDoctor(Doctor doctor){
         allDoctors.add(doctor);
+        Department departmentToAddIn = DepartmentRepository.findById(doctor.getDepartmentId());
+        if(departmentToAddIn != null){
+        departmentToAddIn.addNewDoctor(doctor);
+        }
     }
 
     public static void deleteDoctor(String doctorId){

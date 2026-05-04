@@ -9,15 +9,13 @@ import java.time.LocalDate;
 
 public class Slot {
     private final String slotId;
-    private String doctorId;
     private Time startTime;
     private Time endTime;
     private DayOfWeek day;
     private LocalDate date = DateUtils.getNextSlotDate(day);
 
-    public Slot(String slotId, String doctorId, Time startTime, Time endTime, DayOfWeek day) {
+    public Slot(String slotId, Time startTime, Time endTime, DayOfWeek day) {
         this.slotId = IDGenerator.generateSlotId();
-        this.doctorId = doctorId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
@@ -27,9 +25,6 @@ public class Slot {
         return slotId;
     }
 
-    public String getDoctorId() {
-        return doctorId;
-    }
 
     public Time getStartTime() {
         return startTime;
@@ -55,7 +50,6 @@ public class Slot {
     public String toString() {
         return "Slot{" +
                 "slotId='" + slotId + '\'' +
-                ", doctorId='" + doctorId + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", day=" + day +

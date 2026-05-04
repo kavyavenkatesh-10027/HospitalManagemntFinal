@@ -8,8 +8,7 @@ import repository.DoctorRepository;
 import repository.PatientRepository;
 
 import java.time.DayOfWeek;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AppointmentService {
@@ -22,6 +21,8 @@ public class AppointmentService {
 
         Objects.requireNonNull(DoctorRepository.findById(doctorId)).addAppointment(newAppointment);
     }
+
+
 
     public List<Appointment> viewAllAppointments(){
         return AppointmentRepository.getAllAppointments();

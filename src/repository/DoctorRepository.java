@@ -20,7 +20,7 @@ public class DoctorRepository {
     }
 
     public static List<Doctor> getAllDoctors() {
-        return allDoctors;
+        return new ArrayList<>(allDoctors);
     }
 
     public static Doctor findById(String doctorId) {

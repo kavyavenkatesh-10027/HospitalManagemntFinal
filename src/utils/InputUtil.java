@@ -26,7 +26,7 @@ public class InputUtil {
     public static String askValidNext(String prompt, String error, Predicate<String> validator) {
         while (true) {
             System.out.println(prompt);
-            String input = scan.next().trim();
+            String input = scan.nextLine().trim();
 
             if (validator.test(input)) return input;
 

@@ -29,16 +29,15 @@ public class DoctorController implements AuthorityControllers{
         System.out.println("How shall we help you?\n");
 
         while (true) {
-            System.out.println("\n----- Doctor hboard -----");
+            System.out.println("\n----- Doctor board -----");
             System.out.println("1. View Profile");
             System.out.println("2. Update Profile");
             System.out.println("3. View Appointments");
             System.out.println("4. Take Appointment");
             System.out.println("5. Reschedule Appointment");
-            System.out.println("5. View Patient Medication Details");
             System.out.println("6. Admit Patient");
             System.out.println("7. Discharge Patient");
-            System.out.println("8. View Diagnosis");
+            System.out.println("8. View Diagnosis And Prescription");
             System.out.println("9. View Admissions");
             System.out.println("0. Logout");
 
@@ -54,17 +53,15 @@ public class DoctorController implements AuthorityControllers{
                     break;
 
                 case 3:
-                    viewAssignedWards();
+                    viewAppointments("");
                     break;
 
                 case 4:
-                    viewAppointments("ALL");
+                    takeAppointment();
                     break;
 
                 case 5:
-                    System.out.println("Enter Patient ID:");
-                    String patientId = scan.next();
-                    viewMedicationDetailsForPatient(patientId);
+                    rescheduleAppointments();
                     break;
 
                 case 6:
@@ -109,7 +106,7 @@ public class DoctorController implements AuthorityControllers{
     }
 
     public boolean takeAppointment(){
-
+    return true;
     }
 
 

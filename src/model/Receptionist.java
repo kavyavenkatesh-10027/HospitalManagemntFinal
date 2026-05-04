@@ -12,6 +12,7 @@ public class Receptionist extends User{
         super(name, gender, dob, phnNo, emailId);
         this.receptionistId = IDGenerator.generateReceptionistId();
         this.shift = shift;
+        setRole(Role.RECEPTIONIST);
     }
 
     public String getId() {
@@ -38,7 +39,7 @@ public class Receptionist extends User{
         return "Receptionist{" +
                 "receptionistId='" + receptionistId + '\'' +
                 ", shift=" + shift +
-                ", joinedAt=" + joinedAt +
+                ", joinedAt=" + getJoinedAt() +
                 '}';
     }
 }

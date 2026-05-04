@@ -1,15 +1,23 @@
 package repository;
 
-import model.Department;
+import model.*;
 
+import java.sql.Time;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class DepartmentRepository {
     private static List<Department> allDepartments= new ArrayList<>();
 
+
+
+
     public static List<Department> getAllDepartments() {
-        return allDepartments;
+        return new ArrayList<>(allDepartments);
     }
 
     public void addDepartment(String depName){

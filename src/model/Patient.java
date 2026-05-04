@@ -13,8 +13,8 @@ public class Patient extends User{
     private final String motherName;
     private String guardianName;
     private String guardianNum;
-    private List<Appointment> patientAppointments = new ArrayList<>();
-    private List<Consultation> patientRecord = new ArrayList<>();
+    private final List<Appointment> patientAppointments = new ArrayList<>();
+    private final List<Consultation> patientRecord = new ArrayList<>();
 
     public Patient(String name, String gender, LocalDate dob, String phnNo, String emailId, BloodGroup bloodGroup, String fatherName, String motherName, String guardianName, String guardianNum) {
         super(name, gender
@@ -25,6 +25,7 @@ public class Patient extends User{
         this.motherName = motherName;
         this.guardianName = guardianName;
         this.guardianNum = guardianNum;
+        setRole(Role.PATIENT);
     }
 
 
@@ -89,6 +90,8 @@ public class Patient extends User{
     public String toString() {
         return "Patient{" +
                 "patientID='" + patientID + '\'' +
+                "name= '" + getName() + '\'' +
+                "phone Number '" +getPhnNo() + '\'' +
                 ", bloodGroup=" + bloodGroup +
                 ", fatherName='" + fatherName + '\'' +
                 ", motherName='" + motherName + '\'' +
@@ -96,7 +99,7 @@ public class Patient extends User{
                 ", guardianNum='" + guardianNum + '\'' +
                 ", patientAppointments=" + patientAppointments +
                 ", patientRecord=" + patientRecord +
-                ", joinedAt=" + joinedAt +
+                ", joinedAt=" + getJoinedAt() +
                 '}';
     }
 }

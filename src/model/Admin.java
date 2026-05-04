@@ -10,6 +10,7 @@ public class Admin extends User{
     public Admin(String name, String gender, LocalDate dob, String phnNo, String emailId) {
         super(name, gender, dob, phnNo, emailId);
         this.adminID = IDGenerator.generateAdminId();
+        setRole(Role.ADMIN);
     }
 
     @Override

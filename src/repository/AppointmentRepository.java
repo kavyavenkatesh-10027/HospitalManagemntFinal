@@ -14,7 +14,7 @@ public class AppointmentRepository {
 
 
     public static List<Appointment> getAllAppointments(){
-        return allAppointments;
+        return new ArrayList<>(allAppointments);
     }
 
     public static Appointment findAppointmentsByAppointmentId(String appointmentId){

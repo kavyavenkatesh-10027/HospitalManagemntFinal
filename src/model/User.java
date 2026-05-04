@@ -9,7 +9,7 @@ public abstract class User {
     private final LocalDate dob;
     private String phnNo;
     private String emailId;
-    LocalDateTime joinedAt;
+    private final LocalDateTime joinedAt;
     private Role role;
 
     public User(String name, String gender, LocalDate dob, String phnNo, String emailId){
@@ -53,6 +53,10 @@ public abstract class User {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public LocalDateTime getJoinedAt() {
+        return joinedAt;
     }
 
     public Role getRole() {

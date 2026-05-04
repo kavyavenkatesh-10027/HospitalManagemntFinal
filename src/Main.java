@@ -1,9 +1,9 @@
 import contoller.*;
+import model.Doctor;
 import model.User;
 import service.AuthenticationService;
 import repository.*;
 
-import javax.management.relation.Role;
 import java.util.Scanner;
 
 public class Main {
@@ -19,22 +19,23 @@ public class Main {
             System.out.println("3. Exit");
             System.out.print("Choose option: ");
 
-            int choice = scan.nextInt();
+            String choice = scan.next();
 
             switch (choice) {
-                case 1:
+                case "1":
                     User user = AuthenticationService.login();
                     if (user != null) {
-                        routeUser(user);
+                        System.out.println(user);
+                        Controller.routeUser(user);
                     }
                     break;
 
-                case 2:
+                case "2":
                     User newUser = AuthenticationService.signUp();
                     System.out.println("You can now login.");
                     break;
 
-                case 3:
+                case "3":
                     System.out.println("Exiting...");
                     System.exit(0);
                     return;
@@ -44,29 +45,4 @@ public class Main {
             }
         }
     }
-    public static void routeUser(User user) {
-        User.Role role = user.getRole();
-        switch (role) {
-            case PATIENT:
-                PatientController pc = new PatientController(user);
-                pc.start();
-                break;
-
-            case DOCTOR:
-                DoctorController dc = new DoctorController(user);
-                dc.start();
-                break;
-
-            case NURSE:
-                NurseController nc = new NurseController(user);
-                nc.start();
-                break;
-
-            case RECEPTIONIST:
-                ReceptionistController rc = new ReceptionistController(user);
-                rc.start();
-                break;
-        }
-    }
-
 }

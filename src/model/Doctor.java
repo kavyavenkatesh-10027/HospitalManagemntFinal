@@ -19,6 +19,7 @@ public class Doctor extends User {
         this.doctorId = IDGenerator.generateDoctorId();
         this.departmentId = departmentId;
         this.doctorSchedule = doctorSchedule;
+        setRole(Role.DOCTOR);
     }
 
     @Override
@@ -28,10 +29,6 @@ public class Doctor extends User {
 
     public String getDepartmentId() {
         return departmentId;
-    }
-
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
     }
 
     public List<Appointment> getAssignedAppointments() {
@@ -46,9 +43,8 @@ public class Doctor extends User {
         this.doctorSchedule = doctorSchedule;
     }
 
-    public boolean addAppointment(Appointment newAppointment) {
+    public void addAppointment(Appointment newAppointment) {
         assignedAppointments.add(newAppointment);
-        return true;
     }
 
     @Override
@@ -58,7 +54,7 @@ public class Doctor extends User {
                 ", departmentId='" + departmentId + '\'' +
                 ", doctorSchedule=" + doctorSchedule +
                 ", assignedAppointments=" + assignedAppointments +
-                ", joinedAt=" + joinedAt +
+                ", joinedAt=" + getJoinedAt() +
                 '}';
     }
 }

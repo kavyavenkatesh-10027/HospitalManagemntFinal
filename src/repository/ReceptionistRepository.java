@@ -11,7 +11,7 @@ public class ReceptionistRepository {
     private static final List<Receptionist> allReceptionists = new ArrayList<>();
 
     public static List<Receptionist> getAllReceptionists() {
-        return allReceptionists;
+        return new ArrayList<>(allReceptionists);
     }
 
     public static Receptionist findById(String receptionistId) {

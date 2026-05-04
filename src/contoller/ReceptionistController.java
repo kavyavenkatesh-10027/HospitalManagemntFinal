@@ -22,7 +22,16 @@ public class ReceptionistController implements Controller{
     @Override
     public void start() {
         System.out.println("Welcome to Sugah Hospital\n\nWhere our first priority is your health,\n     and we spend our blood, sweat and tears achieving it\n\n");
-        System.out.println("How shall we help you?\n\n1. Book Appointment\n2.View Appointment\n 3. Reschedule Appointment\n 4. Delete Appointment\n 5. View Admission\n 6. View Profile\n 7. Update Profile\n 8. Initialize Billing");    }
+        System.out.println("How shall we help you?\n");
+        System.out.println("1. Book Appointment");
+        System.out.println("2.View Appointment");
+        System.out.println("3. Reschedule Appointment");
+        System.out.println("4. Delete Appointment");
+        System.out.println("5. View Admission");
+        System.out.println("6. View Profile");
+        System.out.println("7. Update Profile");
+        System.out.println("8. Initialize Billing");
+    }
 
     @Override
     public void viewAppointments(String condition) {

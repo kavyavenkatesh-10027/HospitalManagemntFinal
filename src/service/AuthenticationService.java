@@ -15,13 +15,13 @@ public class AuthenticationService {
     public static User login() {
 
         System.out.println("Enter your registered email address:");
-        String email = scan.next().trim();
+        String email = scan.nextLine().trim();
 
         User user = UserRepo.findUserByEmail(email);
 
         if (user == null) {
             System.out.println("Unregistered email. Would you like to sign up? Y/N");
-            String choice = scan.next().trim();
+            String choice = scan.nextLine().trim();
 
             if (choice.equalsIgnoreCase("Y")) {
                 return signUp();
@@ -59,7 +59,7 @@ public class AuthenticationService {
                     Validator::emailValidator
             );
 
-            if (UserRepo.getEmailUserStore().containsKey(email)) {
+            if (UserRepo.getEmailUserStore().isEmpty()==false && UserRepo.getEmailUserStore().containsKey(email)) {
                 System.out.println("Email already exists");
             } else break;
         }
@@ -76,7 +76,7 @@ public class AuthenticationService {
             String confirm = InputUtil.askValidNext(
                     "Re-enter password:",
                     "Passwords do not match",
-                    input -> input.equals(pswd)
+                    input -> Validator.confirmPasswordValidator(pswd, input)
             );
 
             break;
@@ -114,6 +114,7 @@ public class AuthenticationService {
 
         // ✅ Blood group
         String choice = InputUtil.askValidNext(
+
                 "Select Blood Group:\n1.O+ 2.O- 3.A+ 4.A- 5.B+ 6.B- 7.AB+ 8.AB-",
                 "Invalid choice",
                 s -> s.matches("[1-8]")
@@ -169,6 +170,7 @@ public class AuthenticationService {
         // ✅ Create user
         Patient newPatient = new Patient(name, gender, dob, phnNo, email, bloodGroup, father, mother, guardian, guardianNumber);
         UserRepo.saveUser(newPatient, pswd);
+        PatientRepository.addPatient(newPatient);
 
         System.out.println("\nUser created successfully!");
         return (User)newPatient;

@@ -10,7 +10,7 @@ public class PatientRepository {
     private static List<Patient> allPatients = new ArrayList<>();
 
     public static List<Patient> getAllPatients() {
-        return allPatients;
+        return new ArrayList<>(allPatients);
     }
 
     public static Patient findById(String patientId) {

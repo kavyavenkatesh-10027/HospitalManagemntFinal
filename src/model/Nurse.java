@@ -16,6 +16,7 @@ public class Nurse extends User{
         super(name, gender, dob, phnNo, emailId);
         this.nurseId = IDGenerator.generateNurseId();
         this.shift = shift;
+        setRole(Role.NURSE);
     }
 
     public String getId() {
@@ -38,13 +39,17 @@ public class Nurse extends User{
         assignedWards.add(newWard);
     }
 
+    public void removeAssignedWards(Ward oldWard) {
+        assignedWards.add(oldWard);
+    }
+
     @Override
     public String toString() {
         return "Nurse{" +
                 "nurseId='" + nurseId + '\'' +
                 ", assignedWards=" + assignedWards +
                 ", shift=" + shift +
-                ", joinedAt=" + joinedAt +
+                ", joinedAt=" + getJoinedAt() +
                 '}';
     }
 }

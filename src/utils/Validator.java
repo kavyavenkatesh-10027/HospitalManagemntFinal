@@ -46,6 +46,10 @@ public class Validator {
         return valid;
     }
 
+    public static boolean confirmPasswordValidator(String originalPswd, String confirmPswd) {
+        return originalPswd.equals(confirmPswd);
+    }
+
     public static boolean dobValidator(LocalDate dob) {
         return dob != null && dob.isBefore(LocalDate.now());
     }

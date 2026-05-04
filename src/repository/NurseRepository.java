@@ -10,7 +10,7 @@ public class NurseRepository {
     private static final List<Nurse> allNurses = new ArrayList<>();
 
     public static List<Nurse> getAllNurses() {
-        return allNurses;
+        return new ArrayList<>(allNurses);
     }
 
     public static Nurse findById(String nurseId) {

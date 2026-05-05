@@ -1,15 +1,17 @@
 package contoller;
 
-public interface AuthorityControllers extends Controller {
-    public abstract void admitPatient();
+import model.User;
 
-    public abstract void dischargePatient();
+public interface AuthorityControllers<T extends User> extends Controller<T> {
+    public abstract void admitPatient(T currentUser);
 
-    public abstract void viewDiagnosisAndPrescription();
+    public abstract void dischargePatient(T currentUser);
 
-    public abstract void viewAdmissions();
+    public abstract void viewDiagnosisAndPrescription(T currentUser);
 
-    public default void triggerBilling(){
+    public abstract void viewAdmissions(T currentUser);
+
+    public default void triggerBilling(T currentUser){
 
     }
 }

@@ -1,28 +1,23 @@
 package contoller;
 
+import model.Nurse;
 import model.User;
 import java.util.Scanner;
 
-public class NurseController implements AuthorityControllers{
-
-    private User currentUser;
-
-    public NurseController(User user) {
-        this.currentUser = user;
-    }
+public class NurseController implements AuthorityControllers<Nurse>{
 
     @Override
-    public void viewProfile() {
+    public void viewProfile(Nurse nurse) {
 
     }
 
     @Override
-    public void updateProfile() {
+    public void updateProfile(Nurse nurse) {
 
     }
 
     @Override
-    public void start() {
+    public void start(Nurse currentUser) {
         Scanner scan = new Scanner(System.in);
 
             System.out.println("Welcome to Sugah Hospital\n\nWhere our first priority is your health,\n     and we spend our blood, sweat and tears achieving it\n\n");
@@ -45,41 +40,41 @@ public class NurseController implements AuthorityControllers{
 
             switch (choice) {
                 case 1:
-                    viewProfile();
+                    viewProfile(currentUser);
                     break;
 
                 case 2:
-                    updateProfile();
+                    updateProfile(currentUser);
                     break;
 
                 case 3:
-                    viewAssignedWards();
+                    viewAssignedWards(currentUser);
                     break;
 
                 case 4:
-                    viewAppointments("ALL");
+                    viewAppointments(currentUser);
                     break;
 
                 case 5:
                     System.out.println("Enter Patient ID:");
                     String patientId = scan.next();
-                    viewMedicationDetailsForPatient(patientId);
+                    viewMedicationDetailsForPatient(currentUser, patientId);
                     break;
 
                 case 6:
-                    admitPatient();
+                    admitPatient(currentUser);
                     break;
 
                 case 7:
-                    dischargePatient();
+                    dischargePatient(currentUser);
                     break;
 
                 case 8:
-                    viewDiagnosisAndPrescription();
+                    viewDiagnosisAndPrescription(currentUser);
                     break;
 
                 case 9:
-                    viewAdmissions();
+                    viewAdmissions(currentUser);
                     break;
 
                 case 0:
@@ -93,46 +88,46 @@ public class NurseController implements AuthorityControllers{
     }
 
     @Override
-    public void viewAppointments(String all) {
+    public void viewAppointments(Nurse nurse) {
 
     }
 
     @Override
-    public void bookAppointments() {
+    public void bookAppointments(Nurse nurse) {
 
     }
 
     @Override
-    public void rescheduleAppointments() {
+    public void rescheduleAppointments(Nurse nurse) {
 
     }
 
-    public void viewAssignedWards(){
+    public void viewAssignedWards(Nurse nurse){
 
     }
 
-    public void viewMedicationDetailsForPatient(String patientId){
+    public void viewMedicationDetailsForPatient(Nurse nurse, String patientId){
 
     }
 
 
     @Override
-    public void admitPatient() {
+    public void admitPatient(Nurse nurse) {
 
     }
 
     @Override
-    public void dischargePatient() {
+    public void dischargePatient(Nurse nurse) {
 
     }
 
     @Override
-    public void viewDiagnosisAndPrescription() {
+    public void viewDiagnosisAndPrescription(Nurse nurse) {
 
     }
 
     @Override
-    public void viewAdmissions() {
+    public void viewAdmissions(Nurse nurse) {
 
     }
 

@@ -3,144 +3,139 @@ package contoller;
 import model.*;
 import repository.AppointmentRepository;
 
-public class AdminController implements AuthorityControllers{
-    private User currentUser;
-
-    public AdminController(User user) {
-        this.currentUser = user;
-    }
+public class AdminController implements AuthorityControllers<Admin>{
 
     @Override
-    public void viewProfile() {
+    public void viewProfile(Admin admin) {
 
     }
 
     @Override
-    public void updateProfile() {
+    public void updateProfile(Admin admin) {
 
     }
 
     @Override
-    public void start() {
+    public void start(Admin currentUser) {
 
     }
 
     @Override
-    public void viewAppointments(String temp) {
+    public void viewAppointments(Admin admin) {
 
     }
 
     @Override
-    public void bookAppointments() {
+    public void bookAppointments(Admin admin) {
 
     }
 
     @Override
-    public void rescheduleAppointments() {
+    public void rescheduleAppointments(Admin admin) {
 
     }
 
-    public void deleteAppointments(){
+    public void deleteAppointments(Admin admin){
 
     }
 
-    public void viewAllDoctors(){
+    public void viewAllDoctors(Admin admin){
 
     }
 
-    public void viewAllNurses(){
+    public void viewAllNurses(Admin admin){
 
     }
 
-    public void viewAllPatients(){
+    public void viewAllPatients(Admin admin){
 
     }
 
-    public void viewAllReceptionists(){
+    public void viewAllReceptionists(Admin admin){
 
     }
 
-    public void viewAllUsers(){
+    public void viewAllUsers(Admin admin){
 
     }
-    public void addUser(){
-
-    }
-
-    public void addDoctor(){
+    public void addUser(Admin admin){
 
     }
 
-    public void addNurse(){
+    public void addDoctor(Admin admin){
 
     }
 
-    public void addPatient(){
+    public void addNurse(Admin admin){
 
     }
 
-    public void addReceptionist(){
+    public void addPatient(Admin admin){
 
     }
 
-    public void deleteUser(){
+    public void addReceptionist(Admin admin){
 
     }
 
-    public void deleteDoctor(){
+    public void deleteUser(Admin admin){
 
     }
 
-    public void deleteNurse(){
+    public void deleteDoctor(Admin admin){
 
     }
 
-    public void deletePatient(){
+    public void deleteNurse(Admin admin){
 
     }
 
-    public void deleteReceptionist(){
+    public void deletePatient(Admin admin){
 
     }
 
-    public void editUser(){
+    public void deleteReceptionist(Admin admin){
 
     }
 
-    public void editDoctor(){
+    public void editUser(Admin admin){
 
     }
 
-    public void editNurse(){
+    public void editDoctor(Admin admin){
 
     }
 
-    public void editPatient(){
+    public void editNurse(Admin admin){
 
     }
 
-    public void editReceptionist(){
+    public void editPatient(Admin admin){
+
+    }
+
+    public void editReceptionist(Admin admin){
 
     }
 
 
     @Override
-    public void admitPatient() {
+    public void admitPatient(Admin admin) {
 
     }
 
     @Override
-    public void dischargePatient() {
+    public void dischargePatient(Admin admin) {
 
     }
 
     @Override
-    public void viewDiagnosisAndPrescription() {
+    public void viewDiagnosisAndPrescription(Admin admin) {
 
     }
 
     @Override
-    public void viewAdmissions() {
+    public void viewAdmissions(Admin admin) {
 
     }
 

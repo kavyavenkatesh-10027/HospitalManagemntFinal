@@ -10,41 +10,41 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public interface Controller{
+public interface Controller<T extends User>{
     public static void routeUser(User user) {
         User.Role role = user.getRole();
         System.out.println(role);
         Controller controller = null;
         switch (role) {
             case PATIENT:
-                controller = new PatientController(user);
+                controller = new PatientController();
                 break;
 
             case DOCTOR:
-                controller = new DoctorController(user);
+                controller = new DoctorController();
                 break;
 
             case NURSE:
-                controller = new NurseController(user);
+                controller = new NurseController();
                 break;
 
             case RECEPTIONIST:
-                controller = new ReceptionistController(user);
+                controller = new ReceptionistController();
                 break;
 
         }
         assert controller != null;
-        controller.start();
+        controller.start(user);
     }
-    public abstract void viewProfile();
+    public abstract void viewProfile(T currentUser);
 
-    public abstract void updateProfile();
+    public abstract void updateProfile(T currentUser);
 
-    public abstract void start();
+    public abstract void start(T currentUser);
 
-    public abstract void viewAppointments(String condition);
+    public abstract void viewAppointments(T currentUser);
 
-    public abstract void bookAppointments();
+    public abstract void bookAppointments(T currentUser);
 
     public static Slot selectSlot(HashMap<DayOfWeek, List<Slot>> doctorSchedule, Scanner scan) {
 
@@ -83,9 +83,9 @@ public interface Controller{
         return allSlots.get(choice - 1);
     }
 
-    public abstract void rescheduleAppointments();
+    public abstract void rescheduleAppointments(T currentUser);
 
-    public default void logout(){
+    public default void logout(T currentUser){
 
     }
 }

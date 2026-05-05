@@ -1,28 +1,24 @@
 package contoller;
 
+import model.Doctor;
 import model.User;
 
 import java.util.Scanner;
 
-public class DoctorController implements AuthorityControllers{
-    private User currentUser;
-
-    public DoctorController(User user) {
-        this.currentUser = user;
-    }
+public class DoctorController implements AuthorityControllers<Doctor>{
 
     @Override
-    public void viewProfile() {
+    public void viewProfile(Doctor doctor) {
 
     }
 
     @Override
-    public void updateProfile() {
+    public void updateProfile(Doctor doctor) {
 
     }
 
     @Override
-    public void start() {
+    public void start(Doctor currentUser) {
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Welcome to Sugah Hospital\n\nWhere our first priority is your health,\n     and we spend our blood, sweat and tears achieving it\n\n");
@@ -45,39 +41,39 @@ public class DoctorController implements AuthorityControllers{
 
             switch (choice) {
                 case 1:
-                    viewProfile();
+                    viewProfile(currentUser);
                     break;
 
                 case 2:
-                    updateProfile();
+                    updateProfile(currentUser);
                     break;
 
                 case 3:
-                    viewAppointments("");
+                    viewAppointments(currentUser);
                     break;
 
                 case 4:
-                    takeAppointment();
+                    takeAppointment(currentUser);
                     break;
 
                 case 5:
-                    rescheduleAppointments();
+                    rescheduleAppointments(currentUser);
                     break;
 
                 case 6:
-                    admitPatient();
+                    admitPatient(currentUser);
                     break;
 
                 case 7:
-                    dischargePatient();
+                    dischargePatient(currentUser);
                     break;
 
                 case 8:
-                    viewDiagnosisAndPrescription();
+                    viewDiagnosisAndPrescription(currentUser);
                     break;
 
                 case 9:
-                    viewAdmissions();
+                    viewAdmissions(currentUser);
                     break;
 
                 case 0:
@@ -91,42 +87,42 @@ public class DoctorController implements AuthorityControllers{
     }
 
     @Override
-    public void viewAppointments(String docId) {
+    public void viewAppointments(Doctor doctor) {
         System.out.println("View appointment ");
     }
 
     @Override
-    public void bookAppointments() {
+    public void bookAppointments(Doctor doctor) {
 
     }
 
     @Override
-    public void rescheduleAppointments() {
+    public void rescheduleAppointments(Doctor doctor) {
 
     }
 
-    public boolean takeAppointment(){
+    public boolean takeAppointment(Doctor doctor){
         return true;
     }
 
 
     @Override
-    public void admitPatient() {
+    public void admitPatient(Doctor doctor) {
 
     }
 
     @Override
-    public void dischargePatient() {
+    public void dischargePatient(Doctor doctor) {
 
     }
 
     @Override
-    public void viewDiagnosisAndPrescription() {
+    public void viewDiagnosisAndPrescription(Doctor doctor) {
 
     }
 
     @Override
-    public void viewAdmissions() {
+    public void viewAdmissions(Doctor doctor) {
 
     }
 

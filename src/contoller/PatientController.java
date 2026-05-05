@@ -12,24 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class PatientController implements Controller {
+public class PatientController implements Controller<Patient> {
 
-    private User currentUser;
+
     private static final Scanner scan = new Scanner(System.in);
     private final AppointmentService appointmentService = new AppointmentService();
 
-    public PatientController(User user) {
-        this.currentUser = user;
-    }
 
     @Override
-    public void viewProfile() {
+    public void viewProfile(Patient currentUser) {
         Patient patient = PatientRepository.findById(currentUser.getId());
         System.out.println(patient);
     }
 
     @Override
-    public void updateProfile() {
+    public void updateProfile(Patient currentUser) {
         Patient patient = PatientRepository.findById(currentUser.getId());
 
         if(patient == null) {
@@ -47,8 +44,7 @@ public class PatientController implements Controller {
         System.out.println("Profile updated");
     }
 
-    @Override
-    public void start() {
+    public void start(Patient currentUser) {
 
         System.out.println("Welcome to Sugah Hospital\n\nWhere our first priority is your health,\n     and we spend our blood, sweat and tears achieving it\n\n");
         System.out.println("How shall we help you?\n");
@@ -71,28 +67,28 @@ public class PatientController implements Controller {
 
             switch (choice) {
                 case "1":
-                    bookAppointments();
+                    bookAppointments(currentUser);
                     break;
                 case "2":
-                    viewAppointments(currentUser.getId());
+                    viewAppointments(currentUser);
                     break;
                 case "3":
-                    rescheduleAppointments();
+                    rescheduleAppointments(currentUser);
                     break;
                 case "4":
-                    cancelAppointment(currentUser.getId());
+                    cancelAppointment(currentUser);
                     break;
                 case "5":
-                    viewProfile();
+                    viewProfile(currentUser);
                     break;
                 case "6":
-                    updateProfile();
+                    updateProfile(currentUser);
                     break;
                 case "7":
-                    viewConsultation();
+                    viewConsultation(currentUser);
                     break;
                 case "8":
-                    viewAllConsultation();
+                    viewAllConsultation(currentUser);
                     break;
                 case "0":
                     continueLoop = false;
@@ -104,13 +100,13 @@ public class PatientController implements Controller {
     }
 
     @Override
-    public void viewAppointments(String patId) {
-        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patId);
+    public void viewAppointments(Patient patient) {
+        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patient.getId());
         list.forEach(System.out::println);
     }
 
     @Override
-    public void bookAppointments() {
+    public void bookAppointments(Patient patient) {
 
         // 1. SHOW DEPARTMENTS
         List<Department> departments = DepartmentRepository.getAllDepartments();
@@ -204,7 +200,7 @@ public class PatientController implements Controller {
 
         // 6. BOOK APPOINTMENT
         appointmentService.bookAppointment(
-                currentUser.getId(),
+                patient.getId(),
                 selectedDept.getDeptId(),
                 selectedDoctor.getId(),
                 finalSlot,
@@ -215,9 +211,9 @@ public class PatientController implements Controller {
     }
 
     @Override
-    public void rescheduleAppointments() {
+    public void rescheduleAppointments(Patient patient) {
 
-        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(currentUser.getId());
+        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patient.getId());
 
         if (list.isEmpty()) {
             System.out.println("No appointments found");
@@ -255,7 +251,7 @@ public class PatientController implements Controller {
         Slot newSlot = slots.get(slotChoice - 1);
 
         appointmentService.updateAppointment(
-                currentUser.getId(),
+                patient.getId(),
                 selected.getAppointmentId(),
                 newSlot
         );
@@ -263,9 +259,9 @@ public class PatientController implements Controller {
         System.out.println("Rescheduled successfully");
     }
 
-    public void cancelAppointment(String patientId) {
+    public void cancelAppointment(Patient patient) {
 
-        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patientId);
+        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patient.getId());
 
         if (list.isEmpty()) {
             System.out.println("No appointments found");
@@ -287,19 +283,19 @@ public class PatientController implements Controller {
         Appointment selected = list.get(choice - 1);
 
         appointmentService.deleteAppointment(
-                patientId,
+                patient.getId(),
                 selected.getAppointmentId()
         );
 
         System.out.println("Appointment cancelled");
     }
 
-    public Consultation viewConsultation() {
+    public Consultation viewConsultation(Patient patient) {
         System.out.println("Feature not implemented yet");
         return null;
     }
 
-    public List<Consultation> viewAllConsultation() {
+    public List<Consultation> viewAllConsultation(Patient patient) {
         System.out.println("Feature not implemented yet");
         return null;
     }

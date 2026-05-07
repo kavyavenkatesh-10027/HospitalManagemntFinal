@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 
+import java.time.DayOfWeek;
 import java.util.Scanner;
 
 public class AdminController implements AuthorityControllers<Admin>{
@@ -77,6 +78,24 @@ public class AdminController implements AuthorityControllers<Admin>{
     public void viewAppointments(Admin admin) {
 
     }
+
+    private void viewAllAppointments(){}
+
+    private void viewAppointmentByAppointmentByAppointmentId(String appointmentId){}
+
+    private void viewAppointmentByStatus(Appointment.STATUS status){}
+
+    private void viewAppointmentForPatientId(String patientId){}
+
+    private void viewAppointmentForDoctorId(String doctorId){}
+
+    private void viewAppointmentsUnderDepartmentByDepartmentId(String deptId){}
+
+    private void viewAppointmentScheduleOnDay(DayOfWeek day){}
+
+    private void viewAppointmentBySlotId(String slot){}
+
+
 
     @Override
     public void bookAppointments(Admin admin) {

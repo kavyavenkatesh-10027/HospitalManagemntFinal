@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         DataLoader.load();
-
+        AuthenticationService authService = new AuthenticationService(scan);
 
         while (true) {
             System.out.println("\n------- HOSPITAL MANAGEMENT SYSTEM -------");
@@ -24,15 +24,15 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                    User user = AuthenticationService.login();
+                    User user = authService.login();
                     if (user != null) {
                         System.out.println("Welcome " + user.getName());;
-                        Controller.routeUser(user);
+                        Controller.routeUser(scan, user);
                     }
                     break;
 
                 case "2":
-                    User newUser = AuthenticationService.signUp();
+                    User newUser = authService.signUp();
                     System.out.println("You can now login.");
                     break;
 

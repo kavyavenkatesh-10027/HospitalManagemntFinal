@@ -44,38 +44,24 @@ public class AppointmentService {
     }
 
     public List<Appointment> viewAppointmentsByDoctorId(String doctorId){
-        List<Appointment> allAppointments = AppointmentRepository.getAllAppointments();
-
-        return allAppointments.stream()
-                .filter(a -> a.getDoctorId().equals(doctorId))
-                .collect(Collectors.toList());
+        return AppointmentRepository.appointmentsByDoctorId(doctorId);
 
     }
 
     public List<Appointment> viewAppointmentByDepartmentId(String deptId){
-        List<Appointment> allAppointments = AppointmentRepository.getAllAppointments();
 
-        return allAppointments.stream()
-                .filter(a -> a.getDepartmentId().equals(deptId))
-                .collect(Collectors.toList());
+        return AppointmentRepository.appointmentByDepartmentId(deptId);
 
     }
 
     public List<Appointment> viewAppointmentByDay(DayOfWeek onDay){
-        List<Appointment> allAppointments = AppointmentRepository.getAllAppointments();
 
-        return allAppointments.stream()
-                .filter(a -> a.getAppointmentTiming().getDay().equals(onDay))
-                .collect(Collectors.toList());
-
+    return AppointmentRepository.appointmentByDay(onDay);
     }
 
     public List<Appointment> viewAppointmentBySlotId(String slotId){
-        List<Appointment> allAppointments = AppointmentRepository.getAllAppointments();
 
-        return allAppointments.stream()
-                .filter(a -> a.getAppointmentTiming().getSlotId().equals(slotId))
-                .collect(Collectors.toList());
+        return AppointmentRepository.appointmentBySlotId(slotId);
     }
 
     public void updateAppointment(String patientId, String appointmentId, Slot appointmentTiming){

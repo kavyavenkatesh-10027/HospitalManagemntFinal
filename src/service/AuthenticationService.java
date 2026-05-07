@@ -9,10 +9,14 @@ import java.util.Scanner;
 
 public class AuthenticationService {
 
-    private static final Scanner scan = new Scanner(System.in);
+    private final Scanner scan;
+
+    public AuthenticationService(Scanner scan){
+        this.scan = scan;
+    }
 
     //  LOGIN
-    public static User login() {
+    public User login() {
 
         System.out.println("Enter your registered email address:");
         String email = scan.nextLine().trim();
@@ -48,7 +52,7 @@ public class AuthenticationService {
     }
 
 
-    public static User signUp() {
+    public User signUp() {
 
         //  Email
         String email;
@@ -176,7 +180,7 @@ public class AuthenticationService {
         return (User)newPatient;
     }
 
-    public static void exit() {
+    public void exit() {
         System.out.println("Thank you for using Sugah Hospital App");
         System.exit(0);
     }

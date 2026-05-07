@@ -19,10 +19,17 @@ public class AppointmentRepository {
 
     public static Appointment findAppointmentsByAppointmentId(String appointmentId){
         for (Appointment appoint : allAppointments){
-            appoint.getAppointmentId().equals(appointmentId);
-            return appoint;
+            if(appoint.getAppointmentId().equals(appointmentId)) {
+                return appoint;
+            }
         }
         return null;
+    }
+
+    public static List<Appointment> findAppointmentsByAppointmentStatus(Appointment.STATUS status){
+        return allAppointments.stream()
+                .filter(a -> a.getStatus().equals(status))
+                .collect(Collectors.toList());
     }
 
     public static List<Appointment> findAppointmentsByPatientId(String patientId){

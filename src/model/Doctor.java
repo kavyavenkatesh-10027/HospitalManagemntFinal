@@ -47,6 +47,10 @@ public class Doctor extends User {
         assignedAppointments.add(newAppointment);
     }
 
+    public void cancelAppointment(Appointment toDeleteAppointment){
+        assignedAppointments.remove(toDeleteAppointment);
+    }
+
     @Override
     public String toString() {
         return "Doctor{" +

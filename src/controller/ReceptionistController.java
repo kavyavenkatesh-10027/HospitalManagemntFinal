@@ -1,4 +1,4 @@
-package contoller;
+package controller;
 
 import model.Receptionist;
 import java.util.Scanner;

@@ -16,6 +16,8 @@ import java.util.*;
 public class DataLoader {
 
     public static void load(){
+
+        // ---------------- PATIENTS ----------------
         Patient p1 = new Patient(
                 "Arun Kumar",
                 "M",
@@ -48,20 +50,26 @@ public class DataLoader {
         UserRepo.saveUser(p1, "arun@123");
         UserRepo.saveUser(p2, "priya@123");
 
+        // ---------------- DEPARTMENTS ----------------
         DepartmentRepository.addDepartment("Cardiology");
         DepartmentRepository.addDepartment("Neurology");
         DepartmentRepository.addDepartment("Geriatrics");
-
 
         // ---------------- SLOTS ----------------
         Slot s1 = new Slot("s1", Time.valueOf("10:00:00"), Time.valueOf("11:00:00"), DayOfWeek.MONDAY);
         Slot s2 = new Slot("s2", Time.valueOf("11:00:00"), Time.valueOf("12:00:00"), DayOfWeek.MONDAY);
         Slot s3 = new Slot("s3", Time.valueOf("17:00:00"), Time.valueOf("18:00:00"), DayOfWeek.THURSDAY);
 
-        Slot s4 = new Slot("s4", Time.valueOf("09:00:00"), Time.valueOf("10:00:00"), DayOfWeek.MONDAY);
+        Slot s4 = new Slot("s4", Time.valueOf("10:00:00"), Time.valueOf("11:00:00"), DayOfWeek.MONDAY);
         Slot s5 = new Slot("s5", Time.valueOf("14:00:00"), Time.valueOf("15:00:00"), DayOfWeek.WEDNESDAY);
 
-        // ---------------- DOCTOR 1 SCHEDULE ----------------
+        Slot s6 = new Slot("s6", Time.valueOf("08:00:00"), Time.valueOf("09:00:00"), DayOfWeek.TUESDAY);
+        Slot s7 = new Slot("s7", Time.valueOf("17:00:00"), Time.valueOf("18:00:00"), DayOfWeek.THURSDAY);
+
+        Slot s8 = new Slot("s8", Time.valueOf("12:00:00"), Time.valueOf("13:00:00"), DayOfWeek.WEDNESDAY);
+        Slot s9 = new Slot("s9", Time.valueOf("16:00:00"), Time.valueOf("17:00:00"), DayOfWeek.SATURDAY);
+
+        // ---------------- DOCTOR 1 ----------------
         HashMap<DayOfWeek, List<Slot>> doc1Schedule = new HashMap<>();
         doc1Schedule.put(DayOfWeek.MONDAY, Arrays.asList(s1, s2));
         doc1Schedule.put(DayOfWeek.THURSDAY, Arrays.asList(s3));
@@ -76,9 +84,7 @@ public class DataLoader {
                 doc1Schedule
         );
 
-        Objects.requireNonNull(DepartmentRepository.findById(doc1.getDepartmentId())).addNewDoctor(doc1);
-
-        // ---------------- DOCTOR 2 SCHEDULE ----------------
+        // ---------------- DOCTOR 2 ----------------
         HashMap<DayOfWeek, List<Slot>> doc2Schedule = new HashMap<>();
         doc2Schedule.put(DayOfWeek.MONDAY, Arrays.asList(s4));
         doc2Schedule.put(DayOfWeek.WEDNESDAY, Arrays.asList(s5));
@@ -93,18 +99,52 @@ public class DataLoader {
                 doc2Schedule
         );
 
+        // ---------------- DOCTOR 3 ----------------
+        HashMap<DayOfWeek, List<Slot>> doc3Schedule = new HashMap<>();
+        doc3Schedule.put(DayOfWeek.TUESDAY, Arrays.asList(s6));
+        doc3Schedule.put(DayOfWeek.FRIDAY, Arrays.asList(s7));
+
+        Doctor doc3 = new Doctor(
+                "Dr. Karthik",
+                "M",
+                LocalDate.of(1978, 11, 10),
+                "9988776655",
+                "karthik@hospital.com",
+                "dept-1",
+                doc3Schedule
+        );
+
+        // ---------------- DOCTOR 4 ----------------
+        HashMap<DayOfWeek, List<Slot>> doc4Schedule = new HashMap<>();
+        doc4Schedule.put(DayOfWeek.WEDNESDAY, Arrays.asList(s8));
+        doc4Schedule.put(DayOfWeek.SATURDAY, Arrays.asList(s9));
+
+        Doctor doc4 = new Doctor(
+                "Dr. Anjali",
+                "F",
+                LocalDate.of(1982, 5, 25),
+                "8877665544",
+                "anjali@hospital.com",
+                "dept-3",
+                doc4Schedule
+        );
+
+        // ---------------- ADD DOCTORS TO DEPARTMENTS ----------------
+        Objects.requireNonNull(DepartmentRepository.findById(doc1.getDepartmentId())).addNewDoctor(doc1);
         Objects.requireNonNull(DepartmentRepository.findById(doc2.getDepartmentId())).addNewDoctor(doc2);
+        Objects.requireNonNull(DepartmentRepository.findById(doc3.getDepartmentId())).addNewDoctor(doc3);
+        Objects.requireNonNull(DepartmentRepository.findById(doc4.getDepartmentId())).addNewDoctor(doc4);
 
-
-        // ---------------- LINK TO SLOT REPOSITORY ----------------
+        // ---------------- SLOT REPOSITORY ----------------
         Map<String, List<Slot>> map = new HashMap<>();
         map.put(doc1.getId(), Arrays.asList(s1, s2, s3));
         map.put(doc2.getId(), Arrays.asList(s4, s5));
+        map.put(doc3.getId(), Arrays.asList(s6, s7));
+        map.put(doc4.getId(), Arrays.asList(s8, s9));
 
-        // Reflection of internal map (since you didn't expose setter)
         SlotRepository.getSlotDoctorMap().putAll(map);
 
-        // Initialize booking count = 0
+        // ---------------- INITIAL BOOKING COUNT ----------------
         for (Slot s : SlotRepository.getAllSlots()) {
             SlotRepository.getSlotBookingCount().put(s.getSlotId(), 0);
         }

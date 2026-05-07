@@ -1,7 +1,6 @@
-package contoller;
+package controller;
 
 import model.Doctor;
-import model.User;
 
 import java.util.Scanner;
 

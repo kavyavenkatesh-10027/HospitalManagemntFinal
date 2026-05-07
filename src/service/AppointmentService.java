@@ -1,6 +1,7 @@
 package service;
 
 import model.Appointment;
+import model.Doctor;
 import model.Patient;
 import model.Slot;
 import repository.AppointmentRepository;
@@ -16,10 +17,19 @@ public class AppointmentService {
     public void bookAppointment(String patientId, String departmentId, String doctorId, Slot appointmentTiming, Appointment.STATUS status){
         Appointment newAppointment = new Appointment(patientId, departmentId, doctorId, appointmentTiming, Appointment.STATUS.CONFIRMED);
         AppointmentRepository.addAppointment(newAppointment);
+        for(Appointment ap: AppointmentRepository.getAllAppointments()){
+            System.out.println(ap);
+        }
+        Patient p=PatientRepository.findById(patientId);
+        if(p!=null){
+            p.addNewAppointment(newAppointment);
+        }
+        Doctor d=DoctorRepository.findById(doctorId);
+        if(d!=null){
+            d.addAppointment(newAppointment);
+        }
 
-        Objects.requireNonNull(PatientRepository.findById(patientId)).addNewAppointment(newAppointment);
 
-        Objects.requireNonNull(DoctorRepository.findById(doctorId)).addAppointment(newAppointment);
     }
 
 
@@ -74,18 +84,18 @@ public class AppointmentService {
     }
 
     public void deleteAppointment(String patientId, String appointmentId){
-        List<Appointment> allAppointments = AppointmentRepository.getAllAppointments();
-        List<Appointment> patientSpecific = PatientRepository.findById(patientId).getPatientAppointments();
-        for (Appointment appoint: allAppointments) {
-            if(appoint.getAppointmentId().equals(appointmentId)){
-                allAppointments.remove(appoint);
-                break;
+        Appointment appointmentsToDelete = AppointmentRepository.findAppointmentsByAppointmentId(appointmentId);
+        if(appointmentsToDelete!=null){
+            appointmentsToDelete.setStatus(Appointment.STATUS.CANCELLED);
+
+            Patient p=PatientRepository.findById(appointmentsToDelete.getPatientId());
+            if(p!=null) {
+                p.cancelAppointment(appointmentsToDelete);
             }
-        }
-        for (Appointment appoint : patientSpecific) {
-            if(appoint.getAppointmentId().equals(appointmentId)){
-                allAppointments.remove(appoint);
-                break;
+
+            Doctor d=DoctorRepository.findById(appointmentsToDelete.getDoctorId());
+            if(d!=null) {
+                d.cancelAppointment(appointmentsToDelete);
             }
         }
     }

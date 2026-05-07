@@ -1,12 +1,8 @@
-import contoller.*;
+import controller.*;
 import model.*;
 import service.AuthenticationService;
-import repository.*;
 import utils.DataLoader;
 
-import java.sql.Time;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
@@ -30,7 +26,7 @@ public class Main {
                 case "1":
                     User user = AuthenticationService.login();
                     if (user != null) {
-                        System.out.println(user);
+                        System.out.println("Welcome " + user.getName());;
                         Controller.routeUser(user);
                     }
                     break;

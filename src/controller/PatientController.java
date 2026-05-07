@@ -1,4 +1,4 @@
-package contoller;
+package controller;
 
 import model.*;
 import repository.*;
@@ -6,11 +6,9 @@ import service.AppointmentService;
 import utils.InputUtil;
 import utils.Validator;
 
+import java.sql.Time;
 import java.time.DayOfWeek;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class PatientController implements Controller<Patient> {
 
@@ -111,7 +109,7 @@ public class PatientController implements Controller<Patient> {
         // 1. SHOW DEPARTMENTS
         List<Department> departments = DepartmentRepository.getAllDepartments();
 
-        if (departments.isEmpty()) {
+        if (departments == null || departments.isEmpty()) {
             System.out.println("No departments available");
             return;
         }
@@ -133,64 +131,135 @@ public class PatientController implements Controller<Patient> {
         // 2. GET DOCTORS UNDER DEPARTMENT
         List<Doctor> doctors = selectedDept.getDoctorsUnderDepartment();
 
-        if (doctors.isEmpty()) {
+        if (doctors == null || doctors.isEmpty()) {
             System.out.println("No doctors available in this department");
             return;
         }
 
-        // 3. FIND FIRST AVAILABLE DOCTOR + SLOT
-        Doctor selectedDoctor = null;
-        Slot selectedSlot = null;
+        // 3. FIND FIRST AVAILABLE DOCTOR AND STORE SLOT:
+//        Doctor selectedDoctor = null;
+        HashMap<Slot, String> availableSlotsMappingWithDoctorId = new HashMap<>();
+        //Slot -> DoctorId
 
-        outer:
+//        outer:
         for (Doctor doc : doctors) {
 
             HashMap<DayOfWeek, List<Slot>> schedule = doc.getDoctorSchedule();
 
+            if (schedule == null) continue;
+
             for (List<Slot> slotList : schedule.values()) {
+
+                if (slotList == null) continue;
 
                 for (Slot slot : slotList) {
 
-                    if (SlotRepository.isSlotAvailable(slot.getSlotId())) {
-                        selectedDoctor = doc;
-                        selectedSlot = slot;
-                        break outer;
+                    if (slot != null && SlotRepository.isSlotAvailable(slot.getSlotId())) {
+//                        selectedDoctor = doc;
+                        if (slot != null && SlotRepository.isSlotAvailable(slot.getSlotId())) {
+                            if (availableSlotsMappingWithDoctorId.containsKey(slot)) {
+                                continue;
+                            } else {
+                                availableSlotsMappingWithDoctorId.put(slot, doc.getId());
+                            }
+                        }
                     }
                 }
             }
         }
 
-        if (selectedDoctor == null) {
+//        if (selectedDoctor == null) {
+//            System.out.println("No slots available for this department");
+//            return;
+//        }
+        if (availableSlotsMappingWithDoctorId.isEmpty()) {
             System.out.println("No slots available for this department");
             return;
         }
 
         // 4. SHOW AVAILABLE SLOTS FOR THAT DOCTOR
-        List<Slot> availableSlots = new ArrayList<>();
+        List<Slot> availableSlots = new ArrayList<>(availableSlotsMappingWithDoctorId.keySet());
+        int index=1;
+        HashMap<Integer, Time> uniqueTimings = new HashMap<>();
 
-        HashMap<DayOfWeek, List<Slot>> schedule = selectedDoctor.getDoctorSchedule();
-
-        for (List<Slot> slotList : schedule.values()) {
-            for (Slot slot : slotList) {
-                if (SlotRepository.isSlotAvailable(slot.getSlotId())) {
-                    availableSlots.add(slot);
-                }
+        for(Slot slot: availableSlots){
+            if(!uniqueTimings.containsValue(slot.getStartTime())) {
+                uniqueTimings.put(index, slot.getStartTime());
             }
         }
 
-        for (int i = 0; i < availableSlots.size(); i++) {
-            System.out.println((i + 1) + ". " + availableSlots.get(i));
+
+//        List<Slot> availableSlots = new ArrayList<>();
+//
+//        HashMap<DayOfWeek, List<Slot>> schedule = selectedDoctor.getDoctorSchedule();
+//
+//        for (List<Slot> slotList : schedule.values()) {
+//
+//            if (slotList == null) continue;
+//
+//            for (Slot slot : slotList) {
+//
+//                if (slot != null && SlotRepository.isSlotAvailable(slot.getSlotId())) {
+//                    availableSlots.add(slot);
+//                }
+//            }
+//        }
+//
+//        //  IMPORTANT FIX
+//        if (availableSlots.isEmpty()) {
+//            System.out.println("No available slots for selected doctor");
+//            return;
+//        }
+
+//        for (int i = 0; i < availableSlots.size(); i++) {
+//            System.out.println((i + 1) + ". " + availableSlots.get(i));
+//        }
+        for (int i = 1; i < index+1; i++) {
+            System.out.println(i+". "+uniqueTimings.get(i));
         }
 
-        System.out.println("Select Slot:");
-        int slotChoice = Integer.parseInt(scan.nextLine());
 
-        if (slotChoice < 1 || slotChoice > availableSlots.size()) {
+        // test
+//        for(Slot s: availableSlots){
+//            System.out.println(s);
+//        }
+
+        System.out.println("Select Slot:");
+        int timeChoice = Integer.parseInt(scan.nextLine());
+
+        if (timeChoice < 1 || timeChoice > index) {
             System.out.println("Invalid slot");
             return;
         }
 
-        Slot finalSlot = availableSlots.get(slotChoice - 1);
+        Time selectedTime = uniqueTimings.get(timeChoice);
+
+        Slot finalSlot = null;
+        for (Slot slot: new ArrayList<>(availableSlotsMappingWithDoctorId.keySet())){
+            if(slot.getStartTime().equals(selectedTime)){
+                finalSlot = slot;
+            }
+        }
+
+        String assignedDoctorId;
+
+        //  CRITICAL FIX (prevents your crash)
+        if (finalSlot == null) {
+            System.out.println("Slot selection failed");
+            return;
+        }
+
+         assignedDoctorId = availableSlotsMappingWithDoctorId.get(finalSlot);
+
+        if (assignedDoctorId == null) {
+            System.out.println("Slot selection failed");
+            return;
+        }
+
+        if (finalSlot.getSlotId() == null) {
+            System.out.println("Invalid slot data");
+            return;
+        }
 
         // 5. BOOK SLOT (capacity check)
         if (!SlotRepository.bookSlot(finalSlot.getSlotId())) {
@@ -202,12 +271,12 @@ public class PatientController implements Controller<Patient> {
         appointmentService.bookAppointment(
                 patient.getId(),
                 selectedDept.getDeptId(),
-                selectedDoctor.getId(),
+                assignedDoctorId,
                 finalSlot,
                 Appointment.STATUS.CONFIRMED
         );
 
-        System.out.println("Appointment booked with Doctor ID: " + selectedDoctor.getId());
+        System.out.println("Appointment booked with Doctor ID: " + assignedDoctorId);
     }
 
     @Override

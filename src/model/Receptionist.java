@@ -27,7 +27,7 @@ public class Receptionist extends User{
         this.shift = shift;
     }
 
-    private enum Shift{
+    enum Shift{
         GENERAL,
         MORNING,
         AFTERNOON,

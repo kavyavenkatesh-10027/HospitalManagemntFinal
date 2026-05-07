@@ -37,11 +37,7 @@ public class Slot {
 
     @Override
     public String toString() {
-        return "Slot{" +
-                "slotId='" + slotId + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", day=" + day +
-                '}';
+        return day + ": Appointment Timing: " + startTime + " - " + endTime;
+
     }
 }

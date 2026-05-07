@@ -32,6 +32,10 @@ public class Department {
         doctorsUnderDepartment.add(newDoctor);
     }
 
+    public void removeDoctor(Doctor doctorToRemove){
+        doctorsUnderDepartment.remove(doctorToRemove);
+    }
+
     @Override
     public String toString() {
         return "Department{" +

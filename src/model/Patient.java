@@ -13,7 +13,7 @@ public class Patient extends User{
     private final String motherName;
     private String guardianName;
     private String guardianNum;
-    private final List<Appointment> patientAppointments = new ArrayList<>();
+    private final ArrayList<Appointment> patientAppointments ;
     private final List<Consultation> patientRecord = new ArrayList<>();
 
     public Patient(String name, String gender, LocalDate dob, String phnNo, String emailId, BloodGroup bloodGroup, String fatherName, String motherName, String guardianName, String guardianNum) {
@@ -24,6 +24,7 @@ public class Patient extends User{
         this.motherName = motherName;
         this.guardianName = guardianName;
         this.guardianNum = guardianNum;
+        this.patientAppointments=new ArrayList<>();
         setRole(Role.PATIENT);
     }
 
@@ -68,6 +69,9 @@ public class Patient extends User{
         patientAppointments.add(newlyBookedAppointment);
     }
 
+    public void cancelAppointment(Appointment toDeleteAppointment){
+        patientAppointments.remove(toDeleteAppointment);
+    }
     public List<Consultation> getPatientRecord() {
         return patientRecord;
     }

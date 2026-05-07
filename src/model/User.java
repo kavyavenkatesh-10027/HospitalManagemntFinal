@@ -67,7 +67,7 @@ public abstract class User {
         this.role = role;
     }
 
-    public enum Role {
+     public enum Role {
         ADMIN,
         DOCTOR,
         NURSE,

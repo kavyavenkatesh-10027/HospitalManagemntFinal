@@ -1,7 +1,7 @@
-package contoller;
+package controller;
 
 import model.Nurse;
-import model.User;
+
 import java.util.Scanner;
 
 public class NurseController implements AuthorityControllers<Nurse>{

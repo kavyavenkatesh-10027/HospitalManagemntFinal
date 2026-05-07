@@ -1,16 +1,12 @@
 package repository;
 
-import contoller.DoctorController;
 import model.Department;
 import model.Doctor;
-import model.Patient;
 import model.Slot;
 
-import javax.print.Doc;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DoctorRepository {
 

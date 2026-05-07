@@ -5,7 +5,11 @@ import java.util.Scanner;
 
 public class ReceptionistController implements Controller<Receptionist> {
 
-    private static final Scanner scan = new Scanner(System.in);
+    private final Scanner scan;
+
+    public ReceptionistController(Scanner scan){
+        this.scan = scan;
+    }
 
     @Override
     public void viewProfile(Receptionist receptionist) {

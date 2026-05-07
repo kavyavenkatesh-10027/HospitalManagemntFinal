@@ -5,6 +5,11 @@ import model.Nurse;
 import java.util.Scanner;
 
 public class NurseController implements AuthorityControllers<Nurse>{
+    private final Scanner scan;
+
+    public NurseController(Scanner scan){
+        this.scan = scan;
+    }
 
     @Override
     public void viewProfile(Nurse nurse) {

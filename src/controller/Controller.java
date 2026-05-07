@@ -11,25 +11,25 @@ import java.util.Scanner;
 
 
 public interface Controller<T extends User>{
-    public static void routeUser(User user) {
+    public static void routeUser(Scanner scan, User user) {
         User.Role role = user.getRole();
         System.out.println(role);
         Controller controller = null;
         switch (role) {
             case PATIENT:
-                controller = new PatientController();
+                controller = new PatientController(scan);
                 break;
 
             case DOCTOR:
-                controller = new DoctorController();
+                controller = new DoctorController(scan);
                 break;
 
             case NURSE:
-                controller = new NurseController();
+                controller = new NurseController(scan);
                 break;
 
             case RECEPTIONIST:
-                controller = new ReceptionistController();
+                controller = new ReceptionistController(scan);
                 break;
 
         }

@@ -11,9 +11,12 @@ import java.time.DayOfWeek;
 import java.util.*;
 
 public class PatientController implements Controller<Patient> {
+    private final Scanner scan;
 
+    public PatientController(Scanner scan){
+        this.scan = scan;
+    }
 
-    private static final Scanner scan = new Scanner(System.in);
     private final AppointmentService appointmentService = new AppointmentService();
 
 

@@ -88,7 +88,7 @@ public class AuthenticationService {
 
         scan.nextLine(); // buffer clear
 
-        // ✅ Basic details
+        // Basic details
         String name = InputUtil.ask("Enter your full name:");
 
         String phnNo = InputUtil.askValidNext(
@@ -103,7 +103,7 @@ public class AuthenticationService {
                 g -> Validator.genderValidator(g.toUpperCase())
         ).toUpperCase();
 
-        // ✅ DOB
+        // DOB
         LocalDate dob;
         while (true) {
             try {
@@ -116,7 +116,7 @@ public class AuthenticationService {
             }
         }
 
-        // ✅ Blood group
+        // Blood group
         String choice = InputUtil.askValidNext(
 
                 "Select Blood Group:\n1.O+ 2.O- 3.A+ 4.A- 5.B+ 6.B- 7.AB+ 8.AB-",
@@ -155,7 +155,7 @@ public class AuthenticationService {
 
         scan.nextLine();
 
-        // ✅ Family details
+        // Family details
         String father = InputUtil.ask("Enter name of father:");
         String mother = InputUtil.ask("Enter name of mother:");
 
@@ -171,7 +171,7 @@ public class AuthenticationService {
                 Validator::phnNoValidator
         );
 
-        // ✅ Create user
+        // Create user
         Patient newPatient = new Patient(name, gender, dob, phnNo, email, bloodGroup, father, mother, guardian, guardianNumber);
         UserRepo.saveUser(newPatient, pswd);
         PatientRepository.addPatient(newPatient);

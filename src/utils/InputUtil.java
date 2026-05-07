@@ -14,8 +14,8 @@ public class InputUtil {
 
     public static String askValid(String prompt, String error, Predicate<String> validator) {
         while (true) {
-            System.out.println(prompt);
-            String input = scan.nextLine().trim();
+
+            String input = ask(prompt);
 
             if (validator.test(input)) return input;
 

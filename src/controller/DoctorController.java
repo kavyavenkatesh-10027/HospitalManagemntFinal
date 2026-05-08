@@ -1,11 +1,15 @@
 package controller;
 
+import model.Appointment;
 import model.Doctor;
+import service.AppointmentService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class DoctorController implements AuthorityControllers<Doctor>{
     private final Scanner scan;
+    private final AppointmentService appointmentService;
 
     public DoctorController(Scanner scan){
         this.scan = scan;
@@ -92,7 +96,20 @@ public class DoctorController implements AuthorityControllers<Doctor>{
 
     @Override
     public void viewAppointments(Doctor doctor) {
-        System.out.println("View appointment ");
+        if (doctor == null) {
+            System.out.println("Invalid doctor");
+            return;
+        }
+
+        List<Appointment> appointments =
+                appointmentService.viewAppointmentsByDoctorId(doctor.getId());
+
+        if (appointments == null || appointments.isEmpty()) {
+            System.out.println("No appointments found");
+            return;
+        }
+
+        appointments.forEach(System.out::println);
     }
 
     @Override

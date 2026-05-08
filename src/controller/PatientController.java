@@ -11,49 +11,76 @@ import java.time.DayOfWeek;
 import java.util.*;
 
 public class PatientController implements Controller<Patient> {
+
     private final Scanner scan;
+    private final AppointmentService appointmentService;
 
-    public PatientController(Scanner scan){
+    public PatientController(Scanner scan) {
         this.scan = scan;
+        this.appointmentService = new AppointmentService();
     }
-
-    private final AppointmentService appointmentService = new AppointmentService();
-
 
     @Override
     public void viewProfile(Patient currentUser) {
+
+        if (currentUser == null) {
+            System.out.println("Invalid patient");
+            return;
+        }
+
         Patient patient = PatientRepository.findById(currentUser.getId());
+
+        if (patient == null) {
+            System.out.println("Patient not found");
+            return;
+        }
+
         System.out.println(patient);
     }
 
     @Override
     public void updateProfile(Patient currentUser) {
-        Patient patient = PatientRepository.findById(currentUser.getId());
 
-        if(patient == null) {
+        if (currentUser == null) {
+            System.out.println("Invalid patient");
             return;
         }
-        String name = InputUtil.ask("Enter your full name:");
-        patient.setName(name);
+
+        Patient patient = PatientRepository.findById(currentUser.getId());
+
+        if (patient == null) {
+            System.out.println("Patient not found");
+            return;
+        }
+
+        String name = InputUtil.ask("Enter your full name:").trim();
+
         String phnNo = InputUtil.askValidNext(
                 "Enter your contact no:",
                 "Enter a valid contact no:",
                 Validator::phnNoValidator
-        );
+        ).trim();
+
+        patient.setName(name);
         patient.setPhnNo(phnNo);
 
-        System.out.println("Profile updated");
+        System.out.println("Profile updated successfully");
     }
 
     public void start(Patient currentUser) {
 
-        System.out.println("Welcome to Sugah Hospital\n\nWhere our first priority is your health,\n     and we spend our blood, sweat and tears achieving it\n\n");
-        System.out.println("How shall we help you?\n");
+        if (currentUser == null) {
+            System.out.println("Invalid login");
+            return;
+        }
+
+        System.out.println("Welcome to Sugah Hospital\n\nWhere our first priority is your health, \nand we spend our blood, sweat and tears achieving it");
 
         boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.println("\n-----PATIENT DASHBOARD-----");
+
+            System.out.println("\n----- PATIENT DASHBOARD -----");
             System.out.println("1. Book Appointment");
             System.out.println("2. View Appointment");
             System.out.println("3. Reschedule Appointment");
@@ -64,52 +91,81 @@ public class PatientController implements Controller<Patient> {
             System.out.println("8. View All Visit");
             System.out.println("0. Logout");
 
-            String choice = scan.nextLine();
+            String choice = scan.nextLine().trim();
 
             switch (choice) {
+
                 case "1":
                     bookAppointments(currentUser);
                     break;
+
                 case "2":
                     viewAppointments(currentUser);
                     break;
+
                 case "3":
                     rescheduleAppointments(currentUser);
                     break;
+
                 case "4":
                     cancelAppointment(currentUser);
                     break;
+
                 case "5":
                     viewProfile(currentUser);
                     break;
+
                 case "6":
                     updateProfile(currentUser);
                     break;
+
                 case "7":
                     viewConsultation(currentUser);
                     break;
+
                 case "8":
                     viewAllConsultation(currentUser);
                     break;
+
                 case "0":
                     continueLoop = false;
+                    System.out.println("Logged out successfully");
                     break;
+
                 default:
-                    System.out.println("Invalid Choice");
+                    System.out.println("Invalid choice");
             }
         }
     }
 
     @Override
     public void viewAppointments(Patient patient) {
-        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patient.getId());
-        list.forEach(System.out::println);
+
+        if (patient == null) {
+            System.out.println("Invalid patient");
+            return;
+        }
+
+        List<Appointment> appointments =
+                appointmentService.viewAppointmentsByPatientId(patient.getId());
+
+        if (appointments == null || appointments.isEmpty()) {
+            System.out.println("No appointments found");
+            return;
+        }
+
+        appointments.forEach(System.out::println);
     }
 
     @Override
     public void bookAppointments(Patient patient) {
 
-        // 1. SHOW DEPARTMENTS
+        if (patient == null) {
+            System.out.println("Invalid patient");
+            return;
+        }
+
+        // SHOW DEPARTMENTS
         List<Department> departments = DepartmentRepository.getAllDepartments();
 
         if (departments == null || departments.isEmpty()) {
@@ -117,21 +173,31 @@ public class PatientController implements Controller<Patient> {
             return;
         }
 
+        System.out.println("\n----- DEPARTMENTS -----");
+
         for (int i = 0; i < departments.size(); i++) {
             System.out.println((i + 1) + ". " + departments.get(i).getDeptName());
         }
 
-        System.out.println("Select Department:");
-        int deptChoice = Integer.parseInt(scan.nextLine());
+        int deptChoice;
+
+        try {
+            System.out.println("Select Department:");
+            deptChoice = Integer.parseInt(scan.nextLine().trim());
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+            return;
+        }
 
         if (deptChoice < 1 || deptChoice > departments.size()) {
-            System.out.println("Invalid choice");
+            System.out.println("Invalid department choice");
             return;
         }
 
         Department selectedDept = departments.get(deptChoice - 1);
 
-        // 2. GET DOCTORS UNDER DEPARTMENT
+        // GET DOCTORS
         List<Doctor> doctors = selectedDept.getDoctorsUnderDepartment();
 
         if (doctors == null || doctors.isEmpty()) {
@@ -139,138 +205,132 @@ public class PatientController implements Controller<Patient> {
             return;
         }
 
-        // 3. FIND FIRST AVAILABLE DOCTOR AND STORE SLOT:
-//        Doctor selectedDoctor = null;
-        HashMap<Slot, String> availableSlotsMappingWithDoctorId = new HashMap<>();
-        //Slot -> DoctorId
+        // SLOT -> DOCTOR_ID
+        Map<Slot, String> availableSlotsMap = new LinkedHashMap<>();
 
-//        outer:
-        for (Doctor doc : doctors) {
+        for (Doctor doctor : doctors) {
 
-            HashMap<DayOfWeek, List<Slot>> schedule = doc.getDoctorSchedule();
+            if (doctor == null) {
+                continue;
+            }
 
-            if (schedule == null) continue;
+            HashMap<DayOfWeek, List<Slot>> schedule =
+                    doctor.getDoctorSchedule();
+
+            if (schedule == null || schedule.isEmpty()) {
+                continue;
+            }
 
             for (List<Slot> slotList : schedule.values()) {
 
-                if (slotList == null) continue;
+                if (slotList == null || slotList.isEmpty()) {
+                    continue;
+                }
 
                 for (Slot slot : slotList) {
 
-                    if (slot != null && SlotRepository.isSlotAvailable(slot.getSlotId())) {
-//                        selectedDoctor = doc;
-                        if (slot != null && SlotRepository.isSlotAvailable(slot.getSlotId())) {
-                            if (availableSlotsMappingWithDoctorId.containsKey(slot)) {
-                                continue;
-                            } else {
-                                availableSlotsMappingWithDoctorId.put(slot, doc.getId());
-                            }
-                        }
+                    if (slot == null || slot.getSlotId() == null) {
+                        continue;
                     }
+
+                    boolean available =
+                            SlotRepository.isSlotAvailable(slot.getSlotId());
+
+                    if (!available) {
+                        continue;
+                    }
+
+                    availableSlotsMap.putIfAbsent(slot, doctor.getId());
                 }
             }
         }
 
-//        if (selectedDoctor == null) {
-//            System.out.println("No slots available for this department");
-//            return;
-//        }
-        if (availableSlotsMappingWithDoctorId.isEmpty()) {
-            System.out.println("No slots available for this department");
+        if (availableSlotsMap.isEmpty()) {
+            System.out.println("No slots available");
             return;
         }
 
-        // 4. SHOW AVAILABLE SLOTS FOR THAT DOCTOR
-        List<Slot> availableSlots = new ArrayList<>(availableSlotsMappingWithDoctorId.keySet());
-        int index=1;
-        HashMap<Integer, Time> uniqueTimings = new HashMap<>();
+        // UNIQUE TIMINGS
+        List<Slot> availableSlots =
+                new ArrayList<>(availableSlotsMap.keySet());
 
-        for(Slot slot: availableSlots){
-            if(!uniqueTimings.containsValue(slot.getStartTime())) {
+        Map<Integer, Time> uniqueTimings = new LinkedHashMap<>();
+
+        int index = 1;
+
+        for (Slot slot : availableSlots) {
+
+            if (slot == null || slot.getStartTime() == null) {
+                continue;
+            }
+
+            if (!uniqueTimings.containsValue(slot.getStartTime())) {
+
                 uniqueTimings.put(index, slot.getStartTime());
+                index++;
             }
         }
 
-
-//        List<Slot> availableSlots = new ArrayList<>();
-//
-//        HashMap<DayOfWeek, List<Slot>> schedule = selectedDoctor.getDoctorSchedule();
-//
-//        for (List<Slot> slotList : schedule.values()) {
-//
-//            if (slotList == null) continue;
-//
-//            for (Slot slot : slotList) {
-//
-//                if (slot != null && SlotRepository.isSlotAvailable(slot.getSlotId())) {
-//                    availableSlots.add(slot);
-//                }
-//            }
-//        }
-//
-//        //  IMPORTANT FIX
-//        if (availableSlots.isEmpty()) {
-//            System.out.println("No available slots for selected doctor");
-//            return;
-//        }
-
-//        for (int i = 0; i < availableSlots.size(); i++) {
-//            System.out.println((i + 1) + ". " + availableSlots.get(i));
-//        }
-        for (int i = 1; i < index+1; i++) {
-            System.out.println(i+". "+uniqueTimings.get(i));
+        if (uniqueTimings.isEmpty()) {
+            System.out.println("No valid slot timings found");
+            return;
         }
 
+        System.out.println("\n----- AVAILABLE SLOTS -----");
 
-        // test
-//        for(Slot s: availableSlots){
-//            System.out.println(s);
-//        }
+        for (Map.Entry<Integer, Time> entry : uniqueTimings.entrySet()) {
+            System.out.println(entry.getKey() + ". " + entry.getValue());
+        }
 
-        System.out.println("Select Slot:");
-        int timeChoice = Integer.parseInt(scan.nextLine());
+        int timeChoice;
 
-        if (timeChoice < 1 || timeChoice > index) {
-            System.out.println("Invalid slot");
+        try {
+            System.out.println("Select Slot:");
+            timeChoice = Integer.parseInt(scan.nextLine().trim());
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+            return;
+        }
+
+        if (!uniqueTimings.containsKey(timeChoice)) {
+            System.out.println("Invalid slot choice");
             return;
         }
 
         Time selectedTime = uniqueTimings.get(timeChoice);
 
         Slot finalSlot = null;
-        for (Slot slot: new ArrayList<>(availableSlotsMappingWithDoctorId.keySet())){
-            if(slot.getStartTime().equals(selectedTime)){
+
+        for (Slot slot : availableSlotsMap.keySet()) {
+
+            if (slot == null || slot.getStartTime() == null) {
+                continue;
+            }
+
+            if (slot.getStartTime().equals(selectedTime)) {
                 finalSlot = slot;
+                break;
             }
         }
 
-        String assignedDoctorId;
-
-        //  CRITICAL FIX (prevents your crash)
         if (finalSlot == null) {
             System.out.println("Slot selection failed");
             return;
         }
 
-         assignedDoctorId = availableSlotsMappingWithDoctorId.get(finalSlot);
+        String assignedDoctorId = availableSlotsMap.get(finalSlot);
 
         if (assignedDoctorId == null) {
-            System.out.println("Slot selection failed");
+            System.out.println("Doctor assignment failed");
             return;
         }
 
-        if (finalSlot.getSlotId() == null) {
-            System.out.println("Invalid slot data");
-            return;
-        }
-
-        // 5. BOOK SLOT (capacity check)
         if (!SlotRepository.bookSlot(finalSlot.getSlotId())) {
             System.out.println("Slot just got filled. Try again.");
             return;
         }
 
-        // 6. BOOK APPOINTMENT
         appointmentService.bookAppointment(
                 patient.getId(),
                 selectedDept.getDeptId(),
@@ -279,41 +339,79 @@ public class PatientController implements Controller<Patient> {
                 Appointment.STATUS.CONFIRMED
         );
 
-        System.out.println("Appointment booked with Doctor ID: " + assignedDoctorId);
+        System.out.println("Appointment booked successfully");
+        System.out.println("Doctor ID: " + assignedDoctorId);
     }
 
     @Override
     public void rescheduleAppointments(Patient patient) {
 
-        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patient.getId());
+        if (patient == null) {
+            System.out.println("Invalid patient");
+            return;
+        }
 
-        if (list.isEmpty()) {
+        List<Appointment> appointments =
+                appointmentService.viewAppointmentsByPatientId(patient.getId());
+
+        if (appointments == null || appointments.isEmpty()) {
             System.out.println("No appointments found");
             return;
         }
 
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println((i + 1) + ". " + list.get(i));
+        System.out.println("\n----- APPOINTMENTS -----");
+
+        for (int i = 0; i < appointments.size(); i++) {
+            System.out.println((i + 1) + ". " + appointments.get(i));
         }
 
-        System.out.println("Select appointment to reschedule:");
-        int choice = Integer.parseInt(scan.nextLine());
+        int appointmentChoice;
 
-        if (choice < 1 || choice > list.size()) {
-            System.out.println("Invalid choice");
+        try {
+            System.out.println("Select appointment to reschedule:");
+            appointmentChoice = Integer.parseInt(scan.nextLine().trim());
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
             return;
         }
 
-        Appointment selected = list.get(choice - 1);
+        if (appointmentChoice < 1 ||
+                appointmentChoice > appointments.size()) {
 
-        List<Slot> slots = SlotRepository.getSlotsByDoctorId(selected.getDoctorId());
+            System.out.println("Invalid appointment choice");
+            return;
+        }
+
+        Appointment selectedAppointment =
+                appointments.get(appointmentChoice - 1);
+
+        List<Slot> slots =
+                SlotRepository.getSlotsByDoctorId(
+                        selectedAppointment.getDoctorId()
+                );
+
+        if (slots == null || slots.isEmpty()) {
+            System.out.println("No slots available");
+            return;
+        }
+
+        System.out.println("\n----- AVAILABLE SLOTS -----");
 
         for (int i = 0; i < slots.size(); i++) {
             System.out.println((i + 1) + ". " + slots.get(i));
         }
 
-        System.out.println("Select new slot:");
-        int slotChoice = Integer.parseInt(scan.nextLine());
+        int slotChoice;
+
+        try {
+            System.out.println("Select new slot:");
+            slotChoice = Integer.parseInt(scan.nextLine().trim());
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+            return;
+        }
 
         if (slotChoice < 1 || slotChoice > slots.size()) {
             System.out.println("Invalid slot");
@@ -324,50 +422,78 @@ public class PatientController implements Controller<Patient> {
 
         appointmentService.updateAppointment(
                 patient.getId(),
-                selected.getAppointmentId(),
+                selectedAppointment.getAppointmentId(),
                 newSlot
         );
 
-        System.out.println("Rescheduled successfully");
+        System.out.println("Appointment rescheduled successfully");
     }
 
     public void cancelAppointment(Patient patient) {
 
-        List<Appointment> list = appointmentService.viewAppointmentsByPatientId(patient.getId());
+        if (patient == null) {
+            System.out.println("Invalid patient");
+            return;
+        }
 
-        if (list.isEmpty()) {
+        List<Appointment> appointments =
+                appointmentService.viewAppointmentsByPatientId(patient.getId());
+
+        if (appointments == null || appointments.isEmpty()) {
             System.out.println("No appointments found");
             return;
         }
 
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println((i + 1) + ". " + list.get(i));
+        System.out.println("\n----- APPOINTMENTS -----");
+
+        for (int i = 0; i < appointments.size(); i++) {
+            System.out.println((i + 1) + ". " + appointments.get(i));
         }
 
-        System.out.println("Select appointment to cancel:");
-        int choice = Integer.parseInt(scan.nextLine());
+        int choice;
 
-        if (choice < 1 || choice > list.size()) {
+        try {
+            System.out.println("Select appointment to cancel:");
+            choice = Integer.parseInt(scan.nextLine().trim());
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input");
+            return;
+        }
+
+        if (choice < 1 || choice > appointments.size()) {
             System.out.println("Invalid choice");
             return;
         }
 
-        Appointment selected = list.get(choice - 1);
+        Appointment selectedAppointment = appointments.get(choice - 1);
 
         appointmentService.deleteAppointment(
                 patient.getId(),
-                selected.getAppointmentId()
+                selectedAppointment.getAppointmentId()
         );
 
-        System.out.println("Appointment cancelled");
+        System.out.println("Appointment cancelled successfully");
     }
 
     public Consultation viewConsultation(Patient patient) {
+
+        if (patient == null) {
+            System.out.println("Invalid patient");
+            return null;
+        }
+
         System.out.println("Feature not implemented yet");
         return null;
     }
 
     public List<Consultation> viewAllConsultation(Patient patient) {
+
+        if (patient == null) {
+            System.out.println("Invalid patient");
+            return null;
+        }
+
         System.out.println("Feature not implemented yet");
         return null;
     }

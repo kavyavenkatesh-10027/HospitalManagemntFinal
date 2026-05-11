@@ -452,14 +452,21 @@ public class PatientController implements Controller<Patient> {
 
         int choice;
 
-        try {
-            System.out.println("Select appointment to cancel:");
-            choice = Integer.parseInt(scan.nextLine().trim());
+        System.out.println("Select appointment to cancel");
 
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input");
-            return;
+        if(scan.hasNextInt()) {
+            choice=scan.nextInt();
+        }else{
+            throw new NumberFormatException("Invalid appointment number");
         }
+//        try {
+//            System.out.println("Select appointment to cancel:");
+//            choice = Integer.parseInt(scan.nextLine().trim());
+//
+//        } catch (NumberFormatException e) {
+//            System.out.println("Invalid input");
+//            return;
+//        }
 
         if (choice < 1 || choice > appointments.size()) {
             System.out.println("Invalid choice");

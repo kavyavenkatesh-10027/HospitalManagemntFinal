@@ -210,28 +210,24 @@ public class PatientController implements Controller<Patient> {
 
         for (Doctor doctor : doctors) {
 
-            if (doctor == null) {
-                continue;
-            }
-
-            HashMap<DayOfWeek, List<Slot>> schedule =
+            HashMap<DayOfWeek, List<Slot>> scheduleDayWise =
                     doctor.getDoctorSchedule();
 
-            if (schedule == null || schedule.isEmpty()) {
+            if (scheduleDayWise == null || scheduleDayWise.isEmpty()) {
                 continue;
             }
 
-            for (List<Slot> slotList : schedule.values()) {
+            for (List<Slot> slotInSlotListPerDay : scheduleDayWise.values()) {
 
-                if (slotList == null || slotList.isEmpty()) {
+                if (slotInSlotListPerDay == null || slotInSlotListPerDay.isEmpty()) {
                     continue;
                 }
 
-                for (Slot slot : slotList) {
+                for (Slot slot : slotInSlotListPerDay) {
 
-                    if (slot == null || slot.getSlotId() == null) {
-                        continue;
-                    }
+//                    if (slot == null || slot.getSlotId() == null) {
+//                        continue;
+//                    }
 
                     boolean available =
                             SlotRepository.isSlotAvailable(slot.getSlotId());

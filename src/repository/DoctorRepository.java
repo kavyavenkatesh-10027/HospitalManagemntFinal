@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DoctorRepository {
 
-    private static List<Doctor> allDoctors = new ArrayList<>();
+    private final static List<Doctor> allDoctors = new ArrayList<>();
 
     static {
 

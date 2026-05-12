@@ -65,13 +65,13 @@ public class Patient extends User{
         return patientAppointments;
     }
 
-    public void addNewAppointment(Appointment newlyBookedAppointment) {
-        patientAppointments.add(newlyBookedAppointment);
-    }
-
-    public void cancelAppointment(Appointment toDeleteAppointment){
-        patientAppointments.remove(toDeleteAppointment);
-    }
+//    public void addNewAppointment(Appointment newlyBookedAppointment) {
+//        patientAppointments.add(newlyBookedAppointment);
+//    }
+//
+//    public void cancelAppointment(Appointment toDeleteAppointment){
+//        patientAppointments.remove(toDeleteAppointment);
+//    }
     public List<Consultation> getPatientRecord() {
         return patientRecord;
     }

@@ -68,7 +68,7 @@ public class SlotRepository {
     }
 
     // Get available slots only
-    public static List<Slot> getAvailableSlotsByDoctor(String doctorId) {
+    public static List<Slot> getAvailableSlotsByDoctorId(String doctorId) {
 
         List<Slot> slots = getSlotsByDoctorId(doctorId);
         List<Slot> available = new ArrayList<>();

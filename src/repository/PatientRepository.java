@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PatientRepository {
 
-    private static List<Patient> allPatients = new ArrayList<>();
+    private final static List<Patient> allPatients = new ArrayList<>();
 
 
     public static List<Patient> getAllPatients() {

@@ -129,6 +129,11 @@ public class DataLoader {
                 doc4Schedule
         );
 
+        UserRepo.saveUser(doc1, "rajesh@123");
+        UserRepo.saveUser(doc2, "meena@123");
+        UserRepo.saveUser(doc3, "karthik@123");
+        UserRepo.saveUser(doc4, "anjali@123");
+
         // ---------------- ADD DOCTORS TO DEPARTMENTS ----------------
         Objects.requireNonNull(DepartmentRepository.findById(doc1.getDepartmentId())).addNewDoctor(doc1);
         Objects.requireNonNull(DepartmentRepository.findById(doc2.getDepartmentId())).addNewDoctor(doc2);

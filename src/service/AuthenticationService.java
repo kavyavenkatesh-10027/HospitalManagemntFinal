@@ -19,7 +19,7 @@ public class AuthenticationService {
     public User login() {
 
         System.out.println("Enter your registered email address:");
-        String email = scan.nextLine().trim();
+        String email = scan.next().trim();
 
         User user = UserRepo.findUserByEmail(email);
 
@@ -63,7 +63,7 @@ public class AuthenticationService {
                     Validator::emailValidator
             );
 
-            if (UserRepo.getEmailUserStore().isEmpty()==false && UserRepo.getEmailUserStore().containsKey(email)) {
+            if (!UserRepo.getEmailUserStore().isEmpty() && UserRepo.getEmailUserStore().containsKey(email)) {
                 System.out.println("Email already exists");
             } else break;
         }

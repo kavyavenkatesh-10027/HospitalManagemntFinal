@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DepartmentRepository {
-    private static List<Department> allDepartments= new ArrayList<>();
+    private final static List<Department> allDepartments= new ArrayList<>();
 
 
     public static List<Department> getAllDepartments() {

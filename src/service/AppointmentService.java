@@ -22,7 +22,7 @@ public class AppointmentService {
         }
         Patient p=PatientRepository.findById(patientId);
         if(p!=null){
-            p.addNewAppointment(newAppointment);
+            p.getPatientAppointments().add(newAppointment);
         }
         Doctor d=DoctorRepository.findById(doctorId);
         if(d!=null){
@@ -76,7 +76,7 @@ public class AppointmentService {
 
             Patient p=PatientRepository.findById(appointmentsToDelete.getPatientId());
             if(p!=null) {
-                p.cancelAppointment(appointmentsToDelete);
+                p.getPatientAppointments().remove(appointmentsToDelete);
             }
 
             Doctor d=DoctorRepository.findById(appointmentsToDelete.getDoctorId());

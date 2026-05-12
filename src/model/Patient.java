@@ -16,8 +16,8 @@ public class Patient extends User{
     private final ArrayList<Appointment> patientAppointments ;
     private final List<Consultation> patientRecord = new ArrayList<>();
 
-    public Patient(String name, String gender, LocalDate dob, String phnNo, String emailId, BloodGroup bloodGroup, String fatherName, String motherName, String guardianName, String guardianNum) {
-        super(name, gender, dob, phnNo, emailId);
+    public Patient(String name, String gender, LocalDate dob, String phnNo, String emailId, BloodGroup bloodGroup, String fatherName, String motherName, String guardianName, String guardianNum, Role role) {
+        super(name, gender, dob, phnNo, emailId, role);
         this.patientID = IDGenerator.generatePatientId();
         this.bloodGroup = bloodGroup;
         this.fatherName = fatherName;
@@ -25,7 +25,7 @@ public class Patient extends User{
         this.guardianName = guardianName;
         this.guardianNum = guardianNum;
         this.patientAppointments=new ArrayList<>();
-        setRole(Role.PATIENT);
+        role = Role.PATIENT;
     }
 
     @Override

@@ -14,12 +14,12 @@ public class Doctor extends User {
     private HashMap<DayOfWeek, List<Slot>> doctorSchedule;
     private final List<Appointment> assignedAppointments = new ArrayList<>();
 
-    public Doctor(String name, String gender, LocalDate dob, String phnNo, String emailId, String departmentId, HashMap<DayOfWeek, List<Slot>> doctorSchedule) {
-        super(name, gender, dob, phnNo, emailId);
+    public Doctor(String name, String gender, LocalDate dob, String phnNo, String emailId, String departmentId, HashMap<DayOfWeek, List<Slot>> doctorSchedule, Role role) {
+        super(name, gender, dob, phnNo, emailId, role);
         this.doctorId = IDGenerator.generateDoctorId();
         this.departmentId = departmentId;
         this.doctorSchedule = doctorSchedule;
-        setRole(Role.DOCTOR);
+        role = Role.DOCTOR;
     }
 
     @Override

@@ -7,10 +7,10 @@ import java.time.LocalDate;
 public class Admin extends User{
     private final String adminID;
 
-    public Admin(String name, String gender, LocalDate dob, String phnNo, String emailId) {
-        super(name, gender, dob, phnNo, emailId);
+    public Admin(String name, String gender, LocalDate dob, String phnNo, String emailId, Role role) {
+        super(name, gender, dob, phnNo, emailId, role);
         this.adminID = IDGenerator.generateAdminId();
-        setRole(Role.ADMIN);
+        role = Role.ADMIN;
     }
 
     @Override

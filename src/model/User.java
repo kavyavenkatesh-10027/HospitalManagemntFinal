@@ -12,7 +12,7 @@ public abstract class User {
     private final LocalDateTime joinedAt;
     private Role role;
 
-    public User(String name, String gender, LocalDate dob, String phnNo, String emailId){
+    public User(String name, String gender, LocalDate dob, String phnNo, String emailId, Role role){
         this.name = name;
         this.gender = gender;
         this.dob = dob;
@@ -63,9 +63,9 @@ public abstract class User {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+//    public void setRole(Role role) {
+//        this.role = role;
+//    }
 
      public enum Role {
         ADMIN,

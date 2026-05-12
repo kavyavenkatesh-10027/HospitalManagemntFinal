@@ -8,11 +8,11 @@ public class Receptionist extends User{
     private final String receptionistId;
     private Shift shift;
 
-    public Receptionist(String name, String gender, LocalDate dob, String phnNo, String emailId, Shift shift) {
-        super(name, gender, dob, phnNo, emailId);
+    public Receptionist(String name, String gender, LocalDate dob, String phnNo, String emailId, Shift shift, Role role) {
+        super(name, gender, dob, phnNo, emailId, role);
         this.receptionistId = IDGenerator.generateReceptionistId();
         this.shift = shift;
-        setRole(Role.RECEPTIONIST);
+        role = Role.RECEPTIONIST;
     }
 
     public String getId() {

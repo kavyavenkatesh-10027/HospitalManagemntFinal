@@ -12,11 +12,11 @@ public class Nurse extends User{
     private final List<Ward> assignedWards = new ArrayList<>();
     private Shifts.Shift shift;
 
-    public Nurse(String name, String gender, LocalDate dob, String phnNo, String emailId, Shifts.Shift shift) {
-        super(name, gender, dob, phnNo, emailId);
+    public Nurse(String name, String gender, LocalDate dob, String phnNo, String emailId, Shifts.Shift shift, Role role) {
+        super(name, gender, dob, phnNo, emailId, role);
         this.nurseId = IDGenerator.generateNurseId();
         this.shift = shift;
-        setRole(Role.NURSE);
+        role = Role.NURSE;
     }
 
     public String getId() {
